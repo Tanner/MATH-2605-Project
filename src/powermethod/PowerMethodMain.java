@@ -94,6 +94,13 @@ public class PowerMethodMain {
 		return new double[]{eigenvalue, iterations};
 	}
 	
+	/**
+	 * Determines the smallest eigenvalue via the inverse power method.
+	 * 
+	 * @param matrix Matrix to find the eigenvalue
+	 * @param desiredAccuracy Number of digits accuracy requested
+	 * @return Recessive eigenvalue and number of iterations
+	 */
 	public static double[] inversePowerMethod(Matrix matrix, int desiredAccuracy) {
 		Matrix approximation = new Matrix(new double[][]{{1},{1}});
 
