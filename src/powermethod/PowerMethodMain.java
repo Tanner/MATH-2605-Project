@@ -6,6 +6,8 @@ import java.util.Random;
 import jama.Matrix;
 
 public class PowerMethodMain {
+	public static final int POWER_METHOD_MAX_ITERATIONS = 1000;
+	
 	public static void main(String[] args) {
 		ArrayList<Matrix> matrices = new ArrayList<Matrix>();
 		
@@ -15,7 +17,7 @@ public class PowerMethodMain {
 		
 		Matrix testMatrix = new Matrix(new double[][]{{1, 2},{3, 4}});
 		testMatrix.print(2, 2);
-		powerMethod(testMatrix, 1);
+		System.out.println("Dominant Eigenvalue: "+powerMethod(testMatrix, 3));
 	}
 	
 	public static void generateRandomMatrix(ArrayList<Matrix> matrices, int lowerBound, int upperBound) {
@@ -40,21 +42,31 @@ public class PowerMethodMain {
 		matrices.add(new Matrix(matrix));
 	}
 	
-	public static void powerMethod(Matrix matrix, int desiredAccuracy) {
+	public static double powerMethod(Matrix matrix, int desiredAccuracy) {
 		Matrix approximation = new Matrix(new double[][]{{1},{1}});
-		
-		int accuracy = 0;
+
 		int iterations = 0;
-		//while (accuracy <= desiredAccuracy)
-		//{
+		
+		double relativeError = Double.MAX_VALUE;
+		double previousEigenvalue = 0;
+		double eigenvalue = 0;
+		
+		while (relativeError * 100 > (0.5 * Math.pow(10,2 - desiredAccuracy)) && iterations < POWER_METHOD_MAX_ITERATIONS)
+		{
+			//Approximate!
 			approximation = matrix.times(approximation);
 			
-			//Use's the Rayleigh Equation to solve for the eignvalue
-			double eigenvalue = rayleighEquation(matrix, approximation);
-			System.out.println(eigenvalue);
+			//Use's the Rayleigh Equation to solve for the eigenvalue
+			eigenvalue = rayleighEquation(matrix, approximation);
+			
+			//Calculate the accuracy
+			relativeError = Math.abs((eigenvalue - previousEigenvalue) / eigenvalue);
+			previousEigenvalue = eigenvalue;
 			
 			iterations++;
-		//}
+		}
+		
+		return eigenvalue;
 	}
 	
 	public static void inversePowerMethod(Matrix matrix) {
