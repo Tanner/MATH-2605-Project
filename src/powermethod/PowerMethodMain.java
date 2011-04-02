@@ -7,12 +7,24 @@ import jama.Matrix;
 
 public class PowerMethodMain {
 	public static final int POWER_METHOD_MAX_ITERATIONS = 1000;
+	public static final int ACCURACY = 5;
 	
 	public static void main(String[] args) {
-		ArrayList<Matrix> matrices = new ArrayList<Matrix>();
+		ArrayList<MatrixGroup> matrices = new ArrayList<MatrixGroup>();
 		
 		for (int i = 0; i < 1000; i++) {
-			matrices.add(generateRandomMatrix(-2, 2));
+			MatrixGroup matrixGroup = new MatrixGroup(generateRandomMatrix(-2, 2));
+			
+			double powerMethod[] = powerMethod(matrixGroup.getMatrix(), ACCURACY);
+			double inversePowerMethod[] = inversePowerMethod(matrixGroup.getMatrix(), ACCURACY);
+			
+			matrixGroup.setDominantEigenvalue(powerMethod[0]);
+			matrixGroup.setPowerMethodIterations(powerMethod[1]);
+			
+			matrixGroup.setRecessiveEigenvalue(inversePowerMethod[0]);
+			matrixGroup.setInversePowerMethodIterations(inversePowerMethod[1]);
+			
+			matrices.add(matrixGroup);
 		}
 		
 		Matrix testMatrix = new Matrix(new double[][]{{1, 2},{3, 4}});
@@ -53,9 +65,9 @@ public class PowerMethodMain {
 	 * 
 	 * @param matrix Matrix to find the eigenvalue
 	 * @param desiredAccuracy Number of digits accuracy requested
-	 * @return Dominant eigenvalue
+	 * @return Dominant eigenvalue and number of iterations
 	 */
-	public static double powerMethod(Matrix matrix, int desiredAccuracy) {
+	public static double[] powerMethod(Matrix matrix, int desiredAccuracy) {
 		Matrix approximation = new Matrix(new double[][]{{1},{1}});
 
 		int iterations = 0;
@@ -79,10 +91,10 @@ public class PowerMethodMain {
 			iterations++;
 		}
 		
-		return eigenvalue;
+		return new double[]{eigenvalue, iterations};
 	}
 	
-	public static double inversePowerMethod(Matrix matrix, int desiredAccuracy) {
+	public static double[] inversePowerMethod(Matrix matrix, int desiredAccuracy) {
 		Matrix approximation = new Matrix(new double[][]{{1},{1}});
 
 		int iterations = 0;
@@ -106,7 +118,7 @@ public class PowerMethodMain {
 			iterations++;
 		}
 		
-		return eigenvalue;
+		return new double[]{eigenvalue, iterations};
 	}
 	
 	/**
