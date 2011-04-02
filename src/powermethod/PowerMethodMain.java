@@ -30,7 +30,7 @@ public class PowerMethodMain {
 		double[][] matrix = new double[2][2];
 		for (int r = 0; r < matrix.length; r++) {
 			for (int c = 0; c < matrix[r].length; c++) {
-				matrix[r][c] = rand.nextInt(upperBound - lowerBound + 1) + lowerBound;
+				matrix[r][c] = rand.nextDouble() * (upperBound - lowerBound + 1) + lowerBound;
 			}
 		}
 		matrices.add(new Matrix(matrix));
