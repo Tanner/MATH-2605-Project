@@ -12,7 +12,7 @@ public class PowerMethodMain {
 		ArrayList<Matrix> matrices = new ArrayList<Matrix>();
 		
 		for (int i = 0; i < 1000; i++) {
-			generateRandomMatrix(matrices, -2, 2);
+			matrices.add(generateRandomMatrix(-2, 2));
 		}
 		
 		Matrix testMatrix = new Matrix(new double[][]{{1, 2},{3, 4}});
@@ -20,12 +20,14 @@ public class PowerMethodMain {
 		System.out.println("Dominant Eigenvalue: "+powerMethod(testMatrix, 3));
 	}
 	
-	public static void generateRandomMatrix(ArrayList<Matrix> matrices, int lowerBound, int upperBound) {
-		//Generate a 2×2 matrix with random components evenly distributed in an interval [a,b]
-		if (matrices == null) {
-			matrices = new ArrayList<Matrix>();
-		}
-		
+	/**
+	 * Generate a random 2x2 matrix with values between a lower and upper bound.
+	 * 
+	 * @param lowerBound Lower bound for the values in the matrix
+	 * @param upperBound Matrix bound for the values in the matrix
+	 */
+	public static Matrix generateRandomMatrix(int lowerBound, int upperBound) {
+		//Generate a 2×2 matrix with random components evenly distributed in an interval [a,b]		
 		if (lowerBound > upperBound) {
 			throw new IllegalArgumentException("Invalid bounds.");
 		}
@@ -38,9 +40,20 @@ public class PowerMethodMain {
 				matrix[r][c] = rand.nextDouble() * (upperBound - lowerBound + 1) + lowerBound;
 			}
 		}
-		matrices.add(new Matrix(matrix));
+		
+		return new Matrix(matrix);
 	}
 	
+	/**
+	 * Determines the largest eigenvalue via the power method.
+	 * 
+	 * Sources: http://college.cengage.com/mathematics/larson/elementary_linear/4e/shared/downloads/c10s3.pdf
+	 * 			http://www.scribd.com/doc/9710973/Chapter-10-Eigenvalues-and-Eigenvectors
+	 * 
+	 * @param matrix Matrix to find the eigenvalue
+	 * @param desiredAccuracy Number of digits accuracy requested
+	 * @return Dominant eigenvalue
+	 */
 	public static double powerMethod(Matrix matrix, int desiredAccuracy) {
 		Matrix approximation = new Matrix(new double[][]{{1},{1}});
 
@@ -72,6 +85,13 @@ public class PowerMethodMain {
 		//
 	}
 	
+	/**
+	 * Solve for the eigenvalue given the matrix and its corresponding eigenvector.
+	 * 
+	 * @param matrix Matrix that goes with the eigenvalue and the eigenvector
+	 * @param eigenvector Eigenvector of the eigenvalue to find
+	 * @return Eigenvalue
+	 */
 	public static double rayleighEquation(Matrix matrix, Matrix eigenvector) {
 		Matrix rayleighNominator = (matrix.times(eigenvector)).transpose().times(eigenvector);
 		Matrix rayleighDenominator = eigenvector.transpose().times(eigenvector);
