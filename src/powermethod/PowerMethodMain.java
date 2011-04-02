@@ -18,6 +18,7 @@ public class PowerMethodMain {
 		Matrix testMatrix = new Matrix(new double[][]{{1, 2},{3, 4}});
 		testMatrix.print(2, 2);
 		System.out.println("Dominant Eigenvalue: "+powerMethod(testMatrix, 3));
+		System.out.println("Recessive Eigenvalue: "+inversePowerMethod(testMatrix, 3));
 	}
 	
 	/**
@@ -81,8 +82,31 @@ public class PowerMethodMain {
 		return eigenvalue;
 	}
 	
-	public static void inversePowerMethod(Matrix matrix) {
-		//
+	public static double inversePowerMethod(Matrix matrix, int desiredAccuracy) {
+		Matrix approximation = new Matrix(new double[][]{{1},{1}});
+
+		int iterations = 0;
+		
+		double relativeError = Double.MAX_VALUE;
+		double previousEigenvalue = 0;
+		double eigenvalue = 0;
+		
+		while (relativeError * 100 > (0.5 * Math.pow(10,2 - desiredAccuracy)) && iterations < POWER_METHOD_MAX_ITERATIONS)
+		{
+			//Approximate!
+			approximation = matrix.inverse().times(approximation);
+			
+			//Use's the Rayleigh Equation to solve for the eigenvalue
+			eigenvalue = rayleighEquation(matrix, approximation);
+			
+			//Calculate the accuracy
+			relativeError = Math.abs((eigenvalue - previousEigenvalue) / eigenvalue);
+			previousEigenvalue = eigenvalue;
+			
+			iterations++;
+		}
+		
+		return eigenvalue;
 	}
 	
 	/**
