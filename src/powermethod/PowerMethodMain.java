@@ -14,6 +14,19 @@ public class PowerMethodMain {
 	
 	public static void generateRandomMatrices(ArrayList<Matrix> matrices, int amount, int lowerBound, int upperBound) {
 		//Generate a number of 2×2 matrices with random components evenly distributed in an interval [a,b]
+		if (matrices == null) {
+			matrices = new ArrayList<Matrix>();
+		}
+		
+		if (amount <= 0) {
+			return;
+			//throw new Exception("Amount not a positive number.");
+		}
+		
+		if (lowerBound > upperBound) {
+			return;
+			//throw new Exception("Invalid bounds.");
+		}
 		
 		Random rand = new Random();
 		
