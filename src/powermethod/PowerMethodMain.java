@@ -27,8 +27,7 @@ public class PowerMethodMain {
 		}
 		
 		if (lowerBound > upperBound) {
-			return;
-			//throw new Exception("Invalid bounds.");
+			throw new IllegalArgumentException("Invalid bounds.");
 		}
 		
 		Random rand = new Random();
