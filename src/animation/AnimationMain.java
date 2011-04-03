@@ -1,18 +1,60 @@
 package animation;
 
+import javax.swing.JFrame;
+
 import jama.Matrix;
 
 
 public class AnimationMain {
+	
 	public static void main(String[] args) {
-		double[][] A = {{0, 2}, {3, 4}};
+		Matrix l = new Matrix(new double[][] {
+				{0.0,  0.0,  0.0},
+				{4.0,  0.0,  0.0},
+				{4.0,  1.33, 0.0},
+				{1.33, 1.33, 0.0},
+				{1.33, 6.0,  0.0},
+				{0.0,  6.0,  0.0},
+				{0.0,  0.0,  0.0}
+			});
+		l = l.transpose();
+		Matrix u = new Matrix(new double[][] {
+				{0.0,  0.0,  0.0},
+				{4.0,  0.0,  0.0},
+				{4.0,  6.0,  0.0},
+				{2.66, 6.0,  0.0},
+				{2.66, 1.33, 0.0},
+				{1.33, 1.33, 0.0},
+				{1.33, 6.0,  0.0},
+				{0.0,  6.0,  0.0},
+				{0.0,  0.0,  0.0}
+			});
+		u = u.transpose();
+		Matrix z = new Matrix(new double[][] {
+				{0.0,  0.0,  0.0},
+				{4.0,  0.0,  0.0},
+				{4.0,  1.33, 0.0},
+				{1.33, 1.33, 0.0},
+				{4.0,  4.66, 0.0},
+				{4.0,  6.0,  0.0},
+				{0.0,  6.0,  0.0},
+				{0.0,  4.66, 0.0},
+				{2.66, 4.66, 0.0},
+				{0.0,  1.33, 0.0},
+				{0.0,  0.0,  0.0}
+			});
+		z = z.transpose();
 		
-		Matrix m = new Matrix(A);
+		LetterRotationAnimator animator = new LetterRotationAnimator(l, u, z);
 		
-		m.print(0, 1);
+		AnimationPanel panel = new AnimationPanel(animator);
 		
-		m = m.transpose();
-		
-		m.print(0, 1);
+		JFrame f = new JFrame("Animator");
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//f.setResizable(false);
+		f.add(panel);
+		f.pack();
+		f.setLocationRelativeTo(null);
+		f.setVisible(true);
 	}
 }
