@@ -35,17 +35,16 @@ public class LetterRotationAnimator {
 	private Matrix yRotatedMatrix(Matrix m, double angle) {
 		Matrix translationMatrix = new Matrix(m.getRowDimension(), m.getColumnDimension());
 		for (int c = 0; c < translationMatrix.getColumnDimension(); c++) {
-			translationMatrix.set(1, c, 6.0);
+			// T
+			translationMatrix.set(1, c, 3.0);
 		}
-		
-		m = m.minus(translationMatrix);
-		
+				
 		Matrix rotationMatrix = new Matrix(new double[][] {
 				{1.0, 0.0, 0.0},
 				{0.0, Math.cos(angle), -Math.sin(angle)},
 				{0.0, Math.sin(angle), Math.cos(angle)}
 		});
-		Matrix rotatedMatrix = rotationMatrix.times(m);
+		Matrix rotatedMatrix = rotationMatrix.times(m.minus(translationMatrix)).plus(translationMatrix);
 		return rotatedMatrix;
 	}
 	
@@ -60,7 +59,7 @@ public class LetterRotationAnimator {
 		g2d.setColor(Color.BLACK);
 		g2d.setStroke(new BasicStroke(STROKE_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 		
-		double[][][] arrays = new double[][][] { yRotatedMatrix(m1, Math.PI/2).getArray(), m2.getArray(), m3.getArray() };
+		double[][][] arrays = new double[][][] { yRotatedMatrix(m1, Math.PI).getArray(), m2.getArray(), m3.getArray() };
 		
 		int x_displacement = 20;
 		for (double[][] arr : arrays) {
