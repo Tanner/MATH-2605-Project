@@ -1,11 +1,18 @@
 package animation;
 
+import java.awt.BorderLayout;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import javax.swing.JFrame;
 
 import jama.Matrix;
 
 
 public class AnimationMain {
+	private static final int TOTAL_FRAMES = 121;
 	
 	public static void main(String[] args) {
 		Matrix l = new Matrix(new double[][] {
@@ -47,12 +54,35 @@ public class AnimationMain {
 		
 		LetterRotationAnimator animator = new LetterRotationAnimator(l, u, z);
 		
-		AnimationPanel panel = new AnimationPanel(animator);
+		// print
+		PrintWriter pw;
+		try {
+			pw = new PrintWriter(new BufferedWriter(new FileWriter("AnimationOutput.txt")));
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(0);
+			return;
+		}
+
+		for (int t = 0; t < TOTAL_FRAMES; t++) {
+			animator.print(pw, t, TOTAL_FRAMES);
+		}
+		pw.close();
 		
-		JFrame f = new JFrame("Animator");
+		// GUI
+		AnimationPanel panel = new AnimationPanel(animator);
+		AnimationControlPanel controlPanel = new AnimationControlPanel();
+		
+		panel.setDelegate(controlPanel);
+		controlPanel.setDelegate(panel);
+		
+		JFrame f = new JFrame("Animation from Scratch");
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//f.setResizable(false);
-		f.add(panel);
+		f.setResizable(false);
+		
+		f.add(panel, BorderLayout.NORTH);
+		f.add(controlPanel, BorderLayout.SOUTH);
+		
 		f.pack();
 		f.setLocationRelativeTo(null);
 		f.setVisible(true);

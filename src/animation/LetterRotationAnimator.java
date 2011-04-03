@@ -2,9 +2,11 @@ package animation;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.io.PrintWriter;
 
 import jama.Matrix;
 
@@ -15,7 +17,7 @@ public class LetterRotationAnimator {
 	private Matrix m3;
 		
 	private final int WIDTH = 680;
-	private final int HEIGHT = 300;
+	private final int HEIGHT = 320;
 	private final int MARGIN = 20;
 	private final int STROKE_WIDTH = 2;
 	private final int SIZE_MULTIPLIER = 50;
@@ -25,13 +27,10 @@ public class LetterRotationAnimator {
 		this.m1 = m1;
 		this.m2 = m2;
 		this.m3 = m3;
-		
-//		BufferedImage bi = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
-//		draw(bi.getGraphics());
 	}
 	
-	private Matrix yRotatedMatrix(Matrix m, final int ROTATIONS, final int T, final int TOTAL_FRAMES) {
-		double angle = T * (ROTATIONS*2 * Math.PI)/TOTAL_FRAMES;
+	private static Matrix yRotatedMatrix(Matrix m, final int ROTATIONS, final int T, final int TOTAL_FRAMES) {
+		double angle = T * (ROTATIONS*2 * Math.PI)/(TOTAL_FRAMES-1);
 
 		Matrix translationMatrix = new Matrix(m.getRowDimension(), m.getColumnDimension());
 		for (int c = 0; c < translationMatrix.getColumnDimension(); c++) {
@@ -48,8 +47,8 @@ public class LetterRotationAnimator {
 		return rotatedMatrix;
 	}
 	
-	private Matrix xRotatedMatrix(Matrix m, final int ROTATIONS, final int T, final int TOTAL_FRAMES) {
-		double angle = T * (ROTATIONS * Math.PI)/TOTAL_FRAMES;
+	private static Matrix xRotatedMatrix(Matrix m, final int ROTATIONS, final int T, final int TOTAL_FRAMES) {
+		double angle = T * (ROTATIONS * Math.PI)/(TOTAL_FRAMES-1);
 
 		Matrix translationMatrix = new Matrix(m.getRowDimension(), m.getColumnDimension());
 		for (int c = 0; c < translationMatrix.getColumnDimension(); c++) {
@@ -77,14 +76,15 @@ public class LetterRotationAnimator {
 		g2d.setColor(Color.BLACK);
 		g2d.setStroke(new BasicStroke(STROKE_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 				
-		double[][][] arrays = new double[][][] {
-				yRotatedMatrix(m1, 3, T, TOTAL_FRAMES).getArray(),
-				xRotatedMatrix(m2, 2, T, TOTAL_FRAMES).getArray(),
-				yRotatedMatrix(m3, 5, T, TOTAL_FRAMES).getArray()
+		Matrix[] matrices = new Matrix[] {
+				yRotatedMatrix(m1, 3, T, TOTAL_FRAMES),
+				xRotatedMatrix(m2, 2, T, TOTAL_FRAMES),
+				yRotatedMatrix(m3, 5, T, TOTAL_FRAMES)
 				};
 		
 		int x_displacement = 20;
-		for (double[][] arr : arrays) {
+		for (Matrix m : matrices) {
+			double[][] arr = m.getArray();
 			for (int i = 1; i < arr[0].length; i++) {
 				g2d.drawLine(x_displacement + (int)(arr[0][i-1] * SIZE_MULTIPLIER),
 						HEIGHT + MARGIN - (int)(arr[1][i-1] * SIZE_MULTIPLIER),
@@ -92,13 +92,35 @@ public class LetterRotationAnimator {
 						HEIGHT + MARGIN - (int)(arr[1][i] * SIZE_MULTIPLIER));
 			}
 			
-//			// connect last point to first point
-//			g2d.drawLine(x_displacement + (int)arr[arr.length-1][0] * SIZE_MULTIPLIER,
-//					HEIGHT + MARGIN - (int)arr[arr.length-1][1] * SIZE_MULTIPLIER,
-//					x_displacement + (int)arr[0][0] * SIZE_MULTIPLIER,
-//					HEIGHT + MARGIN - (int)arr[0][1] * SIZE_MULTIPLIER);
-			
 			x_displacement += LETTER_WIDTH + MARGIN*2;
+		}
+		
+		g2d.setColor(Color.DARK_GRAY);
+		g2d.setFont(new Font("Arial", Font.PLAIN, 13));
+		g2d.drawString("Frame " + T, MARGIN, MARGIN + 5);
+	}
+	
+	public void print(PrintWriter pw, final int T, final int TOTAL_FRAMES) {
+		pw.println("-------------------");
+		pw.println("Frame " + T);
+		pw.println("-------------------");
+		
+		Matrix[] matrices = new Matrix[] {
+				yRotatedMatrix(m1, 3, T, TOTAL_FRAMES),
+				xRotatedMatrix(m2, 2, T, TOTAL_FRAMES),
+				yRotatedMatrix(m3, 5, T, TOTAL_FRAMES)
+				};
+		
+		for (int i = 0; i < matrices.length; i++) {
+			if (i == 0) {
+				pw.println("L");
+			} else if (i == 1) {
+				pw.println("U");
+			} else if (i == 2) {
+				pw.println("Z");
+			}
+			
+			matrices[i].print(pw, 6, 2);
 		}
 	}
 
