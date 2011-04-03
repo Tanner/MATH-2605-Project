@@ -1,7 +1,13 @@
 package powermethod;
 
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+
+import javax.imageio.ImageIO;
 
 import jama.Matrix;
 
@@ -27,12 +33,20 @@ public class PowerMethodMain {
 			matrices.add(matrixGroup);
 		}
 		
-		Matrix testMatrix = new Matrix(new double[][]{{1, 2},{3, 4}});
-		testMatrix.print(2, 2);
-		System.out.println("Dominant Eigenvalue: "+powerMethod(testMatrix, 3));
-		System.out.println("Recessive Eigenvalue: "+inversePowerMethod(testMatrix, 3));
+		paintPowerMethodPlot(matrices);
 	}
 	
+	private static void paintPowerMethodPlot(ArrayList<MatrixGroup> matrices) {
+		BufferedImage bufferedImage = new BufferedImage(500, 500, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = bufferedImage.createGraphics();
+		
+		try {
+			ImageIO.write(bufferedImage, "png", new File("powerMethod.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * Generate a random 2x2 matrix with values between a lower and upper bound.
 	 * 
