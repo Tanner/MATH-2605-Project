@@ -39,6 +39,15 @@ public class PowerMethodMain {
 		paintPowerMethodPlot(matrices);
 	}
 	
+	/**
+	 * Plots a XY plot of all the MatrixGroup objects with the X-Axis being the matrix's determinant
+	 * and the Y-Axis being the matrix's trace. The color of the points corresponds to the number of
+	 * iterations for the power method.
+	 * 
+	 * Sources: http://trac.erichseifert.de/gral/
+	 * 
+	 * @param matrices ArrayList of MatrixGroup's to plot
+	 */
 	private static void paintPowerMethodPlot(ArrayList<MatrixGroup> matrices) {
 		DataTable data = new DataTable(Double.class, Double.class);
 		
