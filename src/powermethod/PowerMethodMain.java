@@ -2,19 +2,16 @@ package powermethod;
 
 import jama.Matrix;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.JFrame;
 
 import de.erichseifert.gral.data.DataTable;
-import de.erichseifert.gral.io.plots.DrawableWriter;
-import de.erichseifert.gral.io.plots.DrawableWriterFactory;
 import de.erichseifert.gral.plots.XYPlot;
+import de.erichseifert.gral.plots.points.PointRenderer;
 import de.erichseifert.gral.ui.InteractivePanel;
 
 public class PowerMethodMain {
@@ -53,9 +50,15 @@ public class PowerMethodMain {
 		
 		XYPlot plot = new XYPlot(data);
 		
+		//TODO: Change the color of the points based on the number of iterations.
+		Color color = new Color(0.0f, 0.3f, 1.0f);
+		plot.getPointRenderer(data).setSetting(PointRenderer.COLOR, color);
+		
 		JFrame frame = new JFrame();
 		frame.getContentPane().add(new InteractivePanel(plot));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setPreferredSize(new Dimension(800, 600));
+		frame.pack();
 		frame.setVisible(true);
 	}
 
