@@ -9,7 +9,9 @@ import javax.swing.*;
 public class AnimationControlPanel extends JPanel implements AnimationPanelDelegate {
 	private AnimationControlPanelDelegate delegate;
 	
+	private JButton prevButton;
 	private JButton animateButton;
+	private JButton nextButton;
 	private JTextField frameField;
 	private JButton frameButton;
 	private JButton saveButton;
@@ -17,8 +19,14 @@ public class AnimationControlPanel extends JPanel implements AnimationPanelDeleg
 	public AnimationControlPanel() {
 		AnimationControlPanelActionListener listener = new AnimationControlPanelActionListener();
 		
+		prevButton = new JButton("Previous Frame");
+		prevButton.addActionListener(listener);
+		
 		animateButton = new JButton("Play");
 		animateButton.addActionListener(listener);
+		
+		nextButton = new JButton("Next Frame");
+		nextButton.addActionListener(listener);
 		
 		frameField = new JTextField(5);
 		frameField.setText("0");
@@ -30,7 +38,9 @@ public class AnimationControlPanel extends JPanel implements AnimationPanelDeleg
 		saveButton = new JButton("Save Frame");
 		saveButton.addActionListener(listener);
 		
+		add(prevButton);
 		add(animateButton);
+		add(nextButton);
 		add(frameField);
 		add(frameButton);
 		add(saveButton);
@@ -54,7 +64,17 @@ public class AnimationControlPanel extends JPanel implements AnimationPanelDeleg
 				} else {
 					animateButton.setText("Play");
 				}
-			} else if (e.getSource() == frameField || e.getSource() == frameButton) {
+			}
+			
+			else if (e.getSource() == prevButton) {
+				delegate.showPrevFrame();
+			}
+			
+			else if (e.getSource() == nextButton) {
+				delegate.showNextFrame();
+			}
+			
+			else if (e.getSource() == frameField || e.getSource() == frameButton) {
 				int t;
 				try {
 					t = Integer.parseInt(frameField.getText());
@@ -66,7 +86,9 @@ public class AnimationControlPanel extends JPanel implements AnimationPanelDeleg
 					return;
 				}
 				delegate.showFrame(t);
-			} else if (e.getSource() == saveButton) {
+			}
+			
+			else if (e.getSource() == saveButton) {
 				delegate.saveCurrentFrame();
 			}
 		}
@@ -78,7 +100,25 @@ public class AnimationControlPanel extends JPanel implements AnimationPanelDeleg
 	 * -------------------------------------
 	 */
 
-	public void timeChanged(int t) {
+	public void timeChanged(int t, boolean isAnimating) {
+		if (isAnimating) {
+			prevButton.setEnabled(false);
+			nextButton.setEnabled(false);
+		} else if (t == 0) {
+			prevButton.setEnabled(false);
+			nextButton.setEnabled(true);
+		} else if (t == 120) {
+			nextButton.setEnabled(false);
+			prevButton.setEnabled(true);
+		} else {
+			prevButton.setEnabled(true);
+			nextButton.setEnabled(true);
+		}
+		
+		saveButton.setEnabled(!isAnimating);
+		frameField.setEnabled(!isAnimating);
+		frameButton.setEnabled(!isAnimating);
+		
 		frameField.setText("" + t);
 	}
 
@@ -89,6 +129,8 @@ public class AnimationControlPanel extends JPanel implements AnimationPanelDeleg
 
 interface AnimationControlPanelDelegate {
 	public boolean animate();
+	public void showNextFrame();
+	public void showPrevFrame();
 	public void showFrame(int t);
 	public void saveCurrentFrame();
 }

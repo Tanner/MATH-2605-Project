@@ -40,21 +40,19 @@ public class AnimationPanel extends JPanel implements ActionListener, AnimationC
 		super.paintComponent(g);
 		
 		animator.draw(g, t, TOTAL_FRAMES);
-		
-		delegate.timeChanged(t);
-		
-		if (t >= TOTAL_FRAMES-1) {
-			animationTimer.stop();
-			delegate.animationEnded();
-		}
+
+		delegate.timeChanged(t, animationTimer.isRunning());
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == animationTimer) {
-			delegate.timeChanged(t);
-
 			repaint();
 			t++;
+			
+			if (t >= TOTAL_FRAMES-1) {
+				animationTimer.stop();
+				delegate.animationEnded();
+			}
 		}
 	}
 
@@ -67,10 +65,13 @@ public class AnimationPanel extends JPanel implements ActionListener, AnimationC
 	public boolean animate() {
 		if (animationTimer.isRunning()) {
 			animationTimer.stop();
+			
+			delegate.timeChanged(t, animationTimer.isRunning());
 		} else {
 			if (t == TOTAL_FRAMES-1) {
 				t = 0;
 			}
+			
 			animationTimer.start();
 		}
 		
@@ -82,7 +83,7 @@ public class AnimationPanel extends JPanel implements ActionListener, AnimationC
 			JOptionPane.showMessageDialog(null, "Invalid frame. Frame must be greater than 0 and less than 121.");
 			
 			// force text field back to previous value
-			delegate.timeChanged(this.t);
+			delegate.timeChanged(this.t, animationTimer.isRunning());
 			
 			return;
 		}
@@ -111,9 +112,19 @@ public class AnimationPanel extends JPanel implements ActionListener, AnimationC
 			}
 		}
 	}
+
+	public void showNextFrame() {
+		t++;
+		repaint();
+	}
+
+	public void showPrevFrame() {
+		t--;
+		repaint();
+	}
 }
 
 interface AnimationPanelDelegate {
-	public void timeChanged(int t);
+	public void timeChanged(int t, boolean isAnimating);
 	public void animationEnded();
 }

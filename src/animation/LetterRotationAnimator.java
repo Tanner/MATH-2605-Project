@@ -30,7 +30,7 @@ public class LetterRotationAnimator {
 	}
 	
 	private static Matrix yRotatedMatrix(Matrix m, final int ROTATIONS, final int T, final int TOTAL_FRAMES) {
-		double angle = T * (ROTATIONS*2 * Math.PI)/(TOTAL_FRAMES-1);
+		double angle = T * (ROTATIONS * Math.PI*2)/(TOTAL_FRAMES-1);
 
 		Matrix translationMatrix = new Matrix(m.getRowDimension(), m.getColumnDimension());
 		for (int c = 0; c < translationMatrix.getColumnDimension(); c++) {
@@ -48,7 +48,7 @@ public class LetterRotationAnimator {
 	}
 	
 	private static Matrix xRotatedMatrix(Matrix m, final int ROTATIONS, final int T, final int TOTAL_FRAMES) {
-		double angle = T * (ROTATIONS * Math.PI)/(TOTAL_FRAMES-1);
+		double angle = T * (ROTATIONS * Math.PI*2)/(TOTAL_FRAMES-1);
 
 		Matrix translationMatrix = new Matrix(m.getRowDimension(), m.getColumnDimension());
 		for (int c = 0; c < translationMatrix.getColumnDimension(); c++) {
@@ -77,7 +77,7 @@ public class LetterRotationAnimator {
 		g2d.setStroke(new BasicStroke(STROKE_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 				
 		Matrix[] matrices = new Matrix[] {
-				yRotatedMatrix(m1, 3, T, TOTAL_FRAMES),
+				xRotatedMatrix(m1, 3, T, TOTAL_FRAMES),
 				xRotatedMatrix(m2, 2, T, TOTAL_FRAMES),
 				yRotatedMatrix(m3, 5, T, TOTAL_FRAMES)
 				};
