@@ -77,7 +77,7 @@ public class LetterRotationAnimator {
 		g2d.setStroke(new BasicStroke(STROKE_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 				
 		Matrix[] matrices = new Matrix[] {
-				xRotatedMatrix(m1, 3, T, TOTAL_FRAMES),
+				yRotatedMatrix(m1, 3, T, TOTAL_FRAMES),
 				xRotatedMatrix(m2, 2, T, TOTAL_FRAMES),
 				yRotatedMatrix(m3, 5, T, TOTAL_FRAMES)
 				};
