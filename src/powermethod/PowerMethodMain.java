@@ -1,15 +1,18 @@
 package powermethod;
 
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import jama.Matrix;
+
+import java.awt.Color;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Random;
 
-import javax.imageio.ImageIO;
+import javax.swing.JFrame;
 
-import jama.Matrix;
+import de.erichseifert.gral.data.DataTable;
+import de.erichseifert.gral.plots.XYPlot;
+import de.erichseifert.gral.plots.points.PointRenderer;
+import de.erichseifert.gral.ui.InteractivePanel;
 
 public class PowerMethodMain {
 	public static final int POWER_METHOD_MAX_ITERATIONS = 1000;
@@ -37,14 +40,26 @@ public class PowerMethodMain {
 	}
 	
 	private static void paintPowerMethodPlot(ArrayList<MatrixGroup> matrices) {
-		BufferedImage bufferedImage = new BufferedImage(500, 500, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g = bufferedImage.createGraphics();
+		DataTable data = new DataTable(Double.class, Double.class);
 		
-		try {
-			ImageIO.write(bufferedImage, "png", new File("powerMethod.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
+		for (MatrixGroup group : matrices) {
+			double determinant = group.getMatrix().det();
+			double trace = group.getMatrix().trace();
+			data.add(determinant, trace);
 		}
+		
+		XYPlot plot = new XYPlot(data);
+		
+		//TODO: Change the color of the points based on the number of iterations.
+		Color color = new Color(0.0f, 0.3f, 1.0f);
+		plot.getPointRenderer(data).setSetting(PointRenderer.COLOR, color);
+		
+		JFrame frame = new JFrame();
+		frame.getContentPane().add(new InteractivePanel(plot));
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setPreferredSize(new Dimension(800, 600));
+		frame.pack();
+		frame.setVisible(true);
 	}
 
 	/**
