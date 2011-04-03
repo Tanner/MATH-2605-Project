@@ -16,7 +16,7 @@ public class AnimationMain {
 				{1.33, 6.0,  0.0},
 				{0.0,  6.0,  0.0},
 				{0.0,  0.0,  0.0}
-			});
+				});
 		l = l.transpose();
 		Matrix u = new Matrix(new double[][] {
 				{0.0,  0.0,  0.0},
@@ -28,7 +28,7 @@ public class AnimationMain {
 				{1.33, 6.0,  0.0},
 				{0.0,  6.0,  0.0},
 				{0.0,  0.0,  0.0}
-			});
+				});
 		u = u.transpose();
 		Matrix z = new Matrix(new double[][] {
 				{0.0,  0.0,  0.0},
@@ -42,7 +42,7 @@ public class AnimationMain {
 				{2.66, 4.66, 0.0},
 				{0.0,  1.33, 0.0},
 				{0.0,  0.0,  0.0}
-			});
+				});
 		z = z.transpose();
 		
 		LetterRotationAnimator animator = new LetterRotationAnimator(l, u, z);
