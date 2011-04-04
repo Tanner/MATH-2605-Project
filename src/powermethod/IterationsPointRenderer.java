@@ -23,15 +23,15 @@ public class IterationsPointRenderer extends AbstractPointRenderer {
 	public IterationsPointRenderer() {
 		super();
 		
-		setSettingDefault(COLOR_MIN, new Color(50, 50, 50));
-		setSettingDefault(COLOR, new Color(254, 254, 254));
+		setSettingDefault(COLOR_MIN, Color.BLUE);
+		setSettingDefault(COLOR, Color.RED);
 		setSettingDefault(VALUE_MIN, Double.MIN_VALUE);
 		setSettingDefault(VALUE_MAX, Double.MAX_VALUE);
 	}
 	
 	@Override
 	public Drawable getPoint(final Axis axisY, final AxisRenderer axisYRenderer, final Row row) {
-		double iterations = 500;
+		double iterations = row.get(2).doubleValue();
 		
 		double minValue = (Double)(this.getSetting(VALUE_MIN));
 		double maxValue = (Double)(this.getSetting(VALUE_MAX));
@@ -44,14 +44,13 @@ public class IterationsPointRenderer extends AbstractPointRenderer {
 		Drawable drawable = new AbstractDrawable() {
 			@Override
 			public void draw(DrawingContext context) {
-				System.out.println("("+red+","+green+","+blue+")");
 				Paint paint = new Color(red, green, blue);
 				
 				Shape point = getPointPath(row);
 				GraphicsUtils.fillPaintedShape(
 					context.getGraphics(), point, paint, null);
 				PointRenderer renderer = IterationsPointRenderer.this;
-
+				
 				if (renderer.<Boolean>getSetting(VALUE_DISPLAYED)) {
 					drawValue(context, point, row.get(1).doubleValue());
 				}
@@ -76,12 +75,6 @@ public class IterationsPointRenderer extends AbstractPointRenderer {
 	
 	private double scale(double current, double currentMin, double currentMax, double targetMin, double targetMax) {
 		double scaled = targetMin + (targetMax - targetMin) * ((current - currentMin) / (currentMax - currentMin));
-		
-		/*if (scaled > targetMax) {
-			scaled = targetMax;
-		} else if (scaled < targetMin) {
-			scaled = targetMin;
-		}*/
 		
 		return scaled;
 	}

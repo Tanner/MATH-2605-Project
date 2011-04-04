@@ -49,7 +49,7 @@ public class PowerMethodMain {
 	 * @param matrices ArrayList of MatrixGroup's to plot
 	 */
 	private static void paintPowerMethodPlot(ArrayList<MatrixGroup> matrices) {
-		DataTable data = new DataTable(Double.class, Double.class);
+		DataTable data = new DataTable(Double.class, Double.class, Integer.class);
 		
 		int minIterations = Integer.MAX_VALUE;
 		int maxIterations = Integer.MIN_VALUE;
@@ -65,16 +65,15 @@ public class PowerMethodMain {
 			double determinant = group.getMatrix().det();
 			double trace = group.getMatrix().trace();
 			
-			data.add(determinant, trace);
+			data.add(determinant, trace, group.getPowerMethodIterations());
 		}
 		
 		XYPlot plot = new XYPlot(data);
 		
-		//TODO: Change the color of the points based on the number of iterations.
 		plot.setPointRenderer(data, new IterationsPointRenderer());
 		
 		plot.getPointRenderer(data).setSetting(PointRenderer.COLOR, Color.RED);
-		plot.getPointRenderer(data).setSetting(IterationsPointRenderer.COLOR_MIN, Color.BLUE);
+		plot.getPointRenderer(data).setSetting(IterationsPointRenderer.COLOR_MIN, Color.CYAN);
 
 		plot.getPointRenderer(data).setSetting(IterationsPointRenderer.VALUE_MIN, (double)minIterations);
 		plot.getPointRenderer(data).setSetting(IterationsPointRenderer.VALUE_MAX, (double)maxIterations);
