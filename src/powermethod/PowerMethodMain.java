@@ -28,10 +28,10 @@ public class PowerMethodMain {
 			double inversePowerMethod[] = inversePowerMethod(matrixGroup.getMatrix(), ACCURACY);
 			
 			matrixGroup.setDominantEigenvalue(powerMethod[0]);
-			matrixGroup.setPowerMethodIterations(powerMethod[1]);
+			matrixGroup.setPowerMethodIterations((int)powerMethod[1]);
 			
 			matrixGroup.setRecessiveEigenvalue(inversePowerMethod[0]);
-			matrixGroup.setInversePowerMethodIterations(inversePowerMethod[1]);
+			matrixGroup.setInversePowerMethodIterations((int)inversePowerMethod[1]);
 			
 			matrices.add(matrixGroup);
 		}
