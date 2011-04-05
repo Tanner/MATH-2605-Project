@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.RenderingHints;
+import java.util.Arrays;
 
 import jama.Matrix;
 
@@ -97,6 +98,8 @@ public class LetterRotationAnimator {
 		for (int i = 0; i < sidesRotated.length; i++) {
 			sidesRotated[i].setMatrix(yRotatedMatrix(xRotatedMatrix(sidesRotated[i].getMatrix(), 3, T, TOTAL_FRAMES), 3, T, TOTAL_FRAMES));
 		}
+		
+		Arrays.sort(sidesRotated, new ZMaxComparator());
 		
 		for (Side s : sidesRotated) {
 			double[][] arr = s.getMatrix().getArray();
