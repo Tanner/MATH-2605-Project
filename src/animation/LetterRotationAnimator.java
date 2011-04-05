@@ -7,7 +7,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.RenderingHints;
-import java.io.PrintWriter;
 
 import jama.Matrix;
 
@@ -20,7 +19,6 @@ public class LetterRotationAnimator {
 	private final int MARGIN = 20;
 	private final int STROKE_WIDTH = 2;
 	private final int SIZE_MULTIPLIER = 150;
-	private static final int TOTAL_FRAMES = 121;
 	
 	public LetterRotationAnimator(Side[] sides) {
 		this.sides = sides;
