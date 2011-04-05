@@ -32,4 +32,13 @@ public class Side {
 	public void setColor(Color color) {
 		this.color = color;
 	}
+	
+	public void setOpacity(double opacity) {
+		if (opacity < 0 && opacity > 1) {
+			throw new IllegalArgumentException("Opacity out of range.");
+		}
+		
+		opacity = opacity * 255;
+		color = new Color(color.getRed(), color.getGreen(), color.getBlue(), (int)opacity);
+	}
 }
