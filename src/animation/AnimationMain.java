@@ -12,36 +12,42 @@ public class AnimationMain {
 	
 	public static void main(String[] args) {
 		Side[] cubeSides = new Side[6];
-		cubeSides[0] = new Side(new Matrix(new double[][]{{0.0, 0.0, 0.0},
-									  {0.0, 1.0, 0.0},
-									  {1.0, 1.0, 0.0},
-									  {1.0, 0.0, 0.0},
-									  {0.0, 0.0, 0.0}}).transpose(), Color.RED);
-		cubeSides[1] = new Side(new Matrix(new double[][]{{0.0, 0.0, 1.0},
-									  {0.0, 1.0, 1.0},
-									  {1.0, 1.0, 1.0},
-									  {1.0, 0.0, 1.0},
-									  {0.0, 0.0, 1.0}}).transpose(), Color.BLUE);
-		cubeSides[2] = new Side(new Matrix(new double[][]{{0.0, 0.0, 0.0},
-									  {0.0, 0.0, 1.0},
-									  {0.0, 1.0, 1.0},
-									  {0.0, 1.0, 0.0},
-									  {0.0, 0.0, 0.0}}).transpose(), Color.GREEN);
-		cubeSides[3] = new Side(new Matrix(new double[][]{{1.0, 0.0, 0.0},
-									  {1.0, 0.0, 1.0},
-									  {1.0, 1.0, 1.0},
-									  {1.0, 1.0, 0.0},
-									  {1.0, 0.0, 0.0}}).transpose(), Color.YELLOW);
-		cubeSides[4] = new Side(new Matrix(new double[][]{{1.0, 0.0, 0.0},
-									  {1.0, 0.0, 1.0},
-									  {1.0, 1.0, 1.0},
-									  {1.0, 1.0, 0.0},
-									  {1.0, 0.0, 0.0}}).transpose(), Color.PINK);
-		cubeSides[5] = new Side(new Matrix(new double[][]{{0.0, 1.0, 0.0},
-									  {1.0, 1.0, 0.0},
-									  {1.0, 1.0, 1.0},
-									  {0.0, 1.0, 1.0},
-									  {0.0, 1.0, 0.0}}).transpose(), Color.ORANGE);
+		cubeSides[0] = new Side(new Matrix(new double[][]{
+										{0.0, 0.0, 0.0},
+										{0.0, 1.0, 0.0},
+										{1.0, 1.0, 0.0},
+										{1.0, 0.0, 0.0},
+										{0.0, 0.0, 0.0}}).transpose(), Color.RED);
+		cubeSides[1] = new Side(new Matrix(new double[][]{
+										{0.0, 0.0, 1.0},
+										{0.0, 1.0, 1.0},
+										{1.0, 1.0, 1.0},
+										{1.0, 0.0, 1.0},
+										{0.0, 0.0, 1.0}}).transpose(), Color.BLUE);
+		cubeSides[2] = new Side(new Matrix(new double[][]{
+										{0.0, 0.0, 0.0},
+										{0.0, 0.0, 1.0},
+										{0.0, 1.0, 1.0},
+										{0.0, 1.0, 0.0},
+										{0.0, 0.0, 0.0}}).transpose(), Color.GREEN);
+		cubeSides[3] = new Side(new Matrix(new double[][]{
+										{1.0, 0.0, 0.0},
+										{1.0, 0.0, 1.0},
+										{1.0, 1.0, 1.0},
+										{1.0, 1.0, 0.0},
+										{1.0, 0.0, 0.0}}).transpose(), Color.YELLOW);
+		cubeSides[4] = new Side(new Matrix(new double[][]{
+										{1.0, 0.0, 0.0},
+										{1.0, 0.0, 1.0},
+										{1.0, 1.0, 1.0},
+										{1.0, 1.0, 0.0},
+										{1.0, 0.0, 0.0}}).transpose(), Color.PINK);
+		cubeSides[5] = new Side(new Matrix(new double[][]{
+										{0.0, 1.0, 0.0},
+										{1.0, 1.0, 0.0},
+										{1.0, 1.0, 1.0},
+										{0.0, 1.0, 1.0},
+										{0.0, 1.0, 0.0}}).transpose(), Color.ORANGE);
 		
 		for (Side s : cubeSides) {
 			s.setOpacity(1);
