@@ -12,90 +12,41 @@ import jama.Matrix;
 
 
 public class AnimationMain {
-	private static final int TOTAL_FRAMES = 121;
 	
 	public static void main(String[] args) {
-		Matrix l = new Matrix(new double[][] {
-				{0.0,  0.0,  0.0},
-				{4.0,  0.0,  0.0},
-				{4.0,  1.33, 0.0},
-				{1.33, 1.33, 0.0},
-				{1.33, 6.0,  0.0},
-				{0.0,  6.0,  0.0},
-				{0.0,  0.0,  0.0}
-				});
-		l = l.transpose();
+		Matrix[] cubeSides = new Matrix[6];
+		cubeSides[0] = new Matrix(new double[][]{{0.0, 0.0, 0.0},
+									  {0.0, 1.0, 0.0},
+									  {1.0, 1.0, 0.0},
+									  {1.0, 0.0, 0.0},
+									  {0.0, 0.0, 0.0}}).transpose();
+		cubeSides[1] = new Matrix(new double[][]{{0.0, 0.0, 1.0},
+									  {0.0, 1.0, 1.0},
+									  {1.0, 1.0, 1.0},
+									  {1.0, 0.0, 1.0},
+									  {0.0, 0.0, 1.0}}).transpose();
+		cubeSides[2] = new Matrix(new double[][]{{0.0, 0.0, 0.0},
+									  {0.0, 0.0, 1.0},
+									  {0.0, 1.0, 1.0},
+									  {0.0, 1.0, 0.0},
+									  {0.0, 0.0, 0.0}}).transpose();
+		cubeSides[3] = new Matrix(new double[][]{{1.0, 0.0, 0.0},
+									  {1.0, 0.0, 1.0},
+									  {1.0, 1.0, 1.0},
+									  {1.0, 1.0, 0.0},
+									  {1.0, 0.0, 0.0}}).transpose();
+		cubeSides[4] = new Matrix(new double[][]{{1.0, 0.0, 0.0},
+									  {1.0, 0.0, 1.0},
+									  {1.0, 1.0, 1.0},
+									  {1.0, 1.0, 0.0},
+									  {1.0, 0.0, 0.0}}).transpose();
+		cubeSides[5] = new Matrix(new double[][]{{0.0, 1.0, 0.0},
+									  {1.0, 1.0, 0.0},
+									  {1.0, 1.0, 1.0},
+									  {0.0, 1.0, 1.0},
+									  {0.0, 1.0, 0.0}}).transpose();
 		
-		Matrix u = new Matrix(new double[][] {
-				{0.0,  0.0,  0.0},
-				{4.0,  0.0,  0.0},
-				{4.0,  6.0,  0.0},
-				{2.66, 6.0,  0.0},
-				{2.66, 1.33, 0.0},
-				{1.33, 1.33, 0.0},
-				{1.33, 6.0,  0.0},
-				{0.0,  6.0,  0.0},
-				{0.0,  0.0,  0.0}
-				});
-		
-//		Matrix u = new Matrix(new double[][] {
-//				{0.0, 1.0, 0.0},
-//				{0.0, 1.0, 4.0},
-//				{4.0, 1.0, 4.0},
-//				{4.0, 5.0, 4.0},
-//				{0.0, 5.0, 4.0},
-//				{0.0, 1.0, 4.0},
-//				{0.0, 1.0, 0.0},
-//				{4.0, 1.0, 0.0},
-//				{4.0, 1.0, 4.0},
-//				{4.0, 1.0, 0.0},
-//				{4.0, 5.0, 0.0},
-//				{0.0, 5.0, 0.0},
-//				{0.0, 5.0, 4.0},
-//				{0.0, 5.0, 0.0},
-//				{4.0, 5.0, 0.0},
-//				{4.0, 5.0, 4.0},
-//				{4.0, 1.0, 4.0},
-//				{0.0, 1.0, 4.0},
-//				{0.0, 5.0, 4.0},
-//				{0.0, 5.0, 0.0},
-//				{0.0, 1.0, 0.0},
-//				{4.0, 1.0, 0.0},
-//				{4.0, 5.0, 0.0},	
-//		});
-		u = u.transpose();
-		
-		Matrix z = new Matrix(new double[][] {
-				{0.0,  0.0,  0.0},
-				{4.0,  0.0,  0.0},
-				{4.0,  1.33, 0.0},
-				{1.33, 1.33, 0.0},
-				{4.0,  4.66, 0.0},
-				{4.0,  6.0,  0.0},
-				{0.0,  6.0,  0.0},
-				{0.0,  4.66, 0.0},
-				{2.66, 4.66, 0.0},
-				{0.0,  1.33, 0.0},
-				{0.0,  0.0,  0.0}
-				});
-		z = z.transpose();
-		
-		LetterRotationAnimator animator = new LetterRotationAnimator(l, u, z);
-		
-		// print
-		PrintWriter pw;
-		try {
-			pw = new PrintWriter(new BufferedWriter(new FileWriter("AnimationOutput.txt")));
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.exit(0);
-			return;
-		}
-
-		for (int t = 0; t < TOTAL_FRAMES; t++) {
-			animator.print(pw, t, TOTAL_FRAMES);
-		}
-		pw.close();
+		LetterRotationAnimator animator = new LetterRotationAnimator(cubeSides);
 		
 		// GUI
 		AnimationPanel panel = new AnimationPanel(animator);
