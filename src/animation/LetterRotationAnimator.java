@@ -13,7 +13,7 @@ import jama.Matrix;
 
 
 public class LetterRotationAnimator {
-	private Matrix[] sides;
+	private Side[] sides;
 		
 	private final int WIDTH = 680;
 	private final int HEIGHT = 320;
@@ -22,7 +22,7 @@ public class LetterRotationAnimator {
 	private final int SIZE_MULTIPLIER = 150;
 	private static final int TOTAL_FRAMES = 121;
 	
-	public LetterRotationAnimator(Matrix[] sides) {
+	public LetterRotationAnimator(Side[] sides) {
 		this.sides = sides;
 	}
 	
@@ -90,18 +90,19 @@ public class LetterRotationAnimator {
 		g2d.setColor(Color.BLACK);
 		g2d.setStroke(new BasicStroke(STROKE_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 				
-		Matrix[] sidesRotated = sides.clone();
+		Side[] sidesRotated = sides.clone();
 		for (int i = 0; i < sidesRotated.length; i++) {
-			sidesRotated[i] = yRotatedMatrix(xRotatedMatrix(sidesRotated[i], 3, T, TOTAL_FRAMES), 3, T, TOTAL_FRAMES);
+			sidesRotated[i].setMatrix(yRotatedMatrix(xRotatedMatrix(sidesRotated[i].getMatrix(), 3, T, TOTAL_FRAMES), 3, T, TOTAL_FRAMES));
 		}
-		for (Matrix m : sidesRotated) {
-			double[][] arr = m.getArray();
+		for (Side s : sidesRotated) {
+			double[][] arr = s.getMatrix().getArray();
 			Polygon side = new Polygon();
 			for (int i = 0; i < arr[0].length; i++) {
 				side.addPoint((WIDTH - SIZE_MULTIPLIER)/2 + (int)(arr[0][i]*SIZE_MULTIPLIER),
 						(HEIGHT - SIZE_MULTIPLIER)/2 + (int)(HEIGHT -arr[1][i] * SIZE_MULTIPLIER) - HEIGHT/2);
 			}
-			g2d.drawPolygon(side);
+			g2d.setColor(s.getColor());
+			g2d.fillPolygon(side);
 		}
 		
 		g2d.setColor(Color.DARK_GRAY);

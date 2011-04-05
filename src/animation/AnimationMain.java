@@ -1,6 +1,7 @@
 package animation;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -14,37 +15,37 @@ import jama.Matrix;
 public class AnimationMain {
 	
 	public static void main(String[] args) {
-		Matrix[] cubeSides = new Matrix[6];
-		cubeSides[0] = new Matrix(new double[][]{{0.0, 0.0, 0.0},
+		Side[] cubeSides = new Side[6];
+		cubeSides[0] = new Side(new Matrix(new double[][]{{0.0, 0.0, 0.0},
 									  {0.0, 1.0, 0.0},
 									  {1.0, 1.0, 0.0},
 									  {1.0, 0.0, 0.0},
-									  {0.0, 0.0, 0.0}}).transpose();
-		cubeSides[1] = new Matrix(new double[][]{{0.0, 0.0, 1.0},
+									  {0.0, 0.0, 0.0}}).transpose(), Color.RED);
+		cubeSides[1] = new Side(new Matrix(new double[][]{{0.0, 0.0, 1.0},
 									  {0.0, 1.0, 1.0},
 									  {1.0, 1.0, 1.0},
 									  {1.0, 0.0, 1.0},
-									  {0.0, 0.0, 1.0}}).transpose();
-		cubeSides[2] = new Matrix(new double[][]{{0.0, 0.0, 0.0},
+									  {0.0, 0.0, 1.0}}).transpose(), Color.BLUE);
+		cubeSides[2] = new Side(new Matrix(new double[][]{{0.0, 0.0, 0.0},
 									  {0.0, 0.0, 1.0},
 									  {0.0, 1.0, 1.0},
 									  {0.0, 1.0, 0.0},
-									  {0.0, 0.0, 0.0}}).transpose();
-		cubeSides[3] = new Matrix(new double[][]{{1.0, 0.0, 0.0},
+									  {0.0, 0.0, 0.0}}).transpose(), Color.GREEN);
+		cubeSides[3] = new Side(new Matrix(new double[][]{{1.0, 0.0, 0.0},
 									  {1.0, 0.0, 1.0},
 									  {1.0, 1.0, 1.0},
 									  {1.0, 1.0, 0.0},
-									  {1.0, 0.0, 0.0}}).transpose();
-		cubeSides[4] = new Matrix(new double[][]{{1.0, 0.0, 0.0},
+									  {1.0, 0.0, 0.0}}).transpose(), Color.YELLOW);
+		cubeSides[4] = new Side(new Matrix(new double[][]{{1.0, 0.0, 0.0},
 									  {1.0, 0.0, 1.0},
 									  {1.0, 1.0, 1.0},
 									  {1.0, 1.0, 0.0},
-									  {1.0, 0.0, 0.0}}).transpose();
-		cubeSides[5] = new Matrix(new double[][]{{0.0, 1.0, 0.0},
+									  {1.0, 0.0, 0.0}}).transpose(), Color.PINK);
+		cubeSides[5] = new Side(new Matrix(new double[][]{{0.0, 1.0, 0.0},
 									  {1.0, 1.0, 0.0},
 									  {1.0, 1.0, 1.0},
 									  {0.0, 1.0, 1.0},
-									  {0.0, 1.0, 0.0}}).transpose();
+									  {0.0, 1.0, 0.0}}).transpose(), Color.ORANGE);
 		
 		LetterRotationAnimator animator = new LetterRotationAnimator(cubeSides);
 		
