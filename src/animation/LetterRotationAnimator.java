@@ -90,10 +90,16 @@ public class LetterRotationAnimator {
 		g2d.setColor(Color.BLACK);
 		g2d.setStroke(new BasicStroke(STROKE_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 				
-		Side[] sidesRotated = sides.clone();
+		Side[] sidesRotated = new Side[sides.length];
+		for (int i = 0; i < sidesRotated.length; i++) {
+			sidesRotated[i] = new Side(((Matrix)sides[i].getMatrix().clone()));
+			sidesRotated[i].setColor(sides[i].getColor());
+		}
+		
 		for (int i = 0; i < sidesRotated.length; i++) {
 			sidesRotated[i].setMatrix(yRotatedMatrix(xRotatedMatrix(sidesRotated[i].getMatrix(), 3, T, TOTAL_FRAMES), 3, T, TOTAL_FRAMES));
 		}
+		
 		for (Side s : sidesRotated) {
 			double[][] arr = s.getMatrix().getArray();
 			Polygon side = new Polygon();
