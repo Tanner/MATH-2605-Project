@@ -21,6 +21,10 @@ public class LetterRotationAnimator {
 	private final int STROKE_WIDTH = 2;
 	private final int SIZE_MULTIPLIER = 150;
 	
+	private final boolean X_ROTATE = true;
+	private final boolean Y_ROTATE = false;
+	private final boolean Z_ROTATE = false;
+	
 	public LetterRotationAnimator(Side[] sides) {
 		this.sides = sides;
 	}
@@ -96,7 +100,15 @@ public class LetterRotationAnimator {
 		}
 		
 		for (int i = 0; i < sidesRotated.length; i++) {
-			sidesRotated[i].setMatrix(yRotatedMatrix(xRotatedMatrix(sidesRotated[i].getMatrix(), 3, T, TOTAL_FRAMES), 3, T, TOTAL_FRAMES));
+			if (X_ROTATE) {
+				sidesRotated[i].setMatrix(xRotatedMatrix(sidesRotated[i].getMatrix(), 3, T, TOTAL_FRAMES));
+			}
+			if (Y_ROTATE) {
+				sidesRotated[i].setMatrix(yRotatedMatrix(sidesRotated[i].getMatrix(), 3, T, TOTAL_FRAMES));
+			}
+			if (Z_ROTATE) {
+				sidesRotated[i].setMatrix(zRotatedMatrix(sidesRotated[i].getMatrix(), 3, T, TOTAL_FRAMES));
+			}
 		}
 		
 		Arrays.sort(sidesRotated, new ZMaxComparator());
