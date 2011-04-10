@@ -50,8 +50,10 @@ public class AnimationMain {
 										{0.0, 1.0, 0.0}}).transpose(), Color.ORANGE);
 		
 		for (Side s : cubeSides) {
-			s.setOpacity(1);
+			s.setOpacity(0.1);
 		}
+		
+		cubeSides[0].setColor(Color.RED);
 		
 		LetterRotationAnimator animator = new LetterRotationAnimator(cubeSides);
 		

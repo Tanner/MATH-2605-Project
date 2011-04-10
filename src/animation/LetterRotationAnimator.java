@@ -111,7 +111,7 @@ public class LetterRotationAnimator {
 			}
 		}
 		
-		Arrays.sort(sidesRotated, new ZMaxComparator());
+		//Arrays.sort(sidesRotated, new ZComparator());
 		
 		for (Side s : sidesRotated) {
 			double[][] arr = s.getMatrix().getArray();
@@ -119,10 +119,19 @@ public class LetterRotationAnimator {
 			for (int i = 0; i < arr[0].length; i++) {
 				side.addPoint((WIDTH - SIZE_MULTIPLIER)/2 + (int)(arr[0][i]*SIZE_MULTIPLIER),
 						(HEIGHT - SIZE_MULTIPLIER)/2 + (int)(HEIGHT -arr[1][i] * SIZE_MULTIPLIER) - HEIGHT/2);
+				
+				if (ZComparator.maxZ(s) == arr[2][i]) {
+					g2d.setColor(Color.BLACK);
+					g2d.drawString(""+ZComparator.avgZ(s),(WIDTH - SIZE_MULTIPLIER)/2 + (int)(arr[0][i]*SIZE_MULTIPLIER),
+							(HEIGHT - SIZE_MULTIPLIER)/2 + (int)(HEIGHT - arr[1][i] * SIZE_MULTIPLIER) - HEIGHT/2);
+				}
 			}
 			g2d.setColor(s.getColor());
 			g2d.fillPolygon(side);
+			
+			System.out.println(s.getColor()+": "+ZComparator.avgZ(s));
 		}
+		System.out.println("------");
 		
 		g2d.setColor(Color.DARK_GRAY);
 		g2d.setFont(new Font("Arial", Font.PLAIN, 13));

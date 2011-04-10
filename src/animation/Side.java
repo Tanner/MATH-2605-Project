@@ -41,4 +41,23 @@ public class Side {
 		opacity = opacity * 255;
 		color = new Color(color.getRed(), color.getGreen(), color.getBlue(), (int)opacity);
 	}
+	
+	public double[] getCenter() {
+		double[] center = new double[3];
+		
+		double[][] array = matrix.getArray();
+		for (int i = 0; i < array[0].length; i++) {
+			center[0] += array[0][i];
+			center[1] += array[1][i];
+			center[2] += array[2][i];
+		}
+		
+		for (int i = 0; i < center.length; i++) {
+			if (center[i] != 0 && center[i] != 5) {
+				center[i] = center[i] / 4;
+			}
+		}
+		
+		return center;
+	}
 }
