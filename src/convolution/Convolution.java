@@ -4,7 +4,7 @@ import jama.Matrix;
 
 public class Convolution {
 	public static void main(String[] args) {
-		convolude(new Matrix(new double[][]{{1.0, 0.0, 1.0, 1.0, 0.0}}).transpose());
+		convolude(new Matrix(new double[][]{{1,0,1,1,1,0,1,1,1,0,0,0,1,1,1,1,0,1,0,1,0}}).transpose()).print(4, 2);
 	}
 	
 	public static Matrix convolude(Matrix x) {
@@ -73,9 +73,7 @@ public class Convolution {
 			
 			results.setMatrix(0, 1, t, t, result);
 		}
-		
-		results.print(10, 10);
-		
+				
 		return results;
 	}
 }
