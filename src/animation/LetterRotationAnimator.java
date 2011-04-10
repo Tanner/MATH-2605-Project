@@ -41,7 +41,7 @@ public class LetterRotationAnimator {
 		return rotatedMatrix(m, rotationMatrix);
 	}
 	
-	private static Matrix yRotatedMatrix(Matrix m, final int ROTATIONS, final int T, final int TOTAL_FRAMES) {
+	private static Matrix xRotatedMatrix(Matrix m, final int ROTATIONS, final int T, final int TOTAL_FRAMES) {
 		double angle = T * (ROTATIONS * Math.PI*2)/(TOTAL_FRAMES-1);
 				
 		Matrix rotationMatrix = new Matrix(new double[][] {
@@ -53,7 +53,7 @@ public class LetterRotationAnimator {
 		return rotatedMatrix(m, rotationMatrix);
 	}
 	
-	private static Matrix xRotatedMatrix(Matrix m, final int ROTATIONS, final int T, final int TOTAL_FRAMES) {
+	private static Matrix yRotatedMatrix(Matrix m, final int ROTATIONS, final int T, final int TOTAL_FRAMES) {
 		double angle = T * (ROTATIONS * Math.PI*2)/(TOTAL_FRAMES-1);
 
 		Matrix rotationMatrix = new Matrix(new double[][] {
@@ -95,8 +95,8 @@ public class LetterRotationAnimator {
 				
 		Matrix[] matrices = new Matrix[] {
 				zRotatedMatrix(m1, 3, T, TOTAL_FRAMES),
-				xRotatedMatrix(m2, 2, T, TOTAL_FRAMES),
-				yRotatedMatrix(m3, 5, T, TOTAL_FRAMES)
+				yRotatedMatrix(m2, 2, T, TOTAL_FRAMES),
+				xRotatedMatrix(m3, 5, T, TOTAL_FRAMES)
 				};
 		
 		int x_displacement = 20;
@@ -123,18 +123,18 @@ public class LetterRotationAnimator {
 		pw.println("-------------------");
 		
 		Matrix[] matrices = new Matrix[] {
-				yRotatedMatrix(m1, 3, T, TOTAL_FRAMES),
-				xRotatedMatrix(m2, 2, T, TOTAL_FRAMES),
-				yRotatedMatrix(m3, 5, T, TOTAL_FRAMES)
+				zRotatedMatrix(m1, 3, T, TOTAL_FRAMES),
+				yRotatedMatrix(m2, 2, T, TOTAL_FRAMES),
+				xRotatedMatrix(m3, 5, T, TOTAL_FRAMES)
 				};
 		
 		for (int i = 0; i < matrices.length; i++) {
 			if (i == 0) {
-				pw.println("L");
+				pw.print("L");
 			} else if (i == 1) {
-				pw.println("U");
+				pw.print("U");
 			} else if (i == 2) {
-				pw.println("Z");
+				pw.print("Z");
 			}
 			
 			matrices[i].print(pw, 6, 2);
