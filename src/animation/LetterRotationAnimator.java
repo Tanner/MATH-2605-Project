@@ -130,11 +130,11 @@ public class LetterRotationAnimator {
 		
 		for (int i = 0; i < matrices.length; i++) {
 			if (i == 0) {
-				pw.println("L");
+				pw.print("L");
 			} else if (i == 1) {
-				pw.println("U");
+				pw.print("U");
 			} else if (i == 2) {
-				pw.println("Z");
+				pw.print("Z");
 			}
 			
 			matrices[i].print(pw, 6, 2);
