@@ -7,10 +7,12 @@ public class Convolution {
 		convolude(new Matrix(new double[][]{{1.0, 0.0, 1.0, 1.0, 0.0}}).transpose());
 	}
 	
-	public static String convolude(Matrix x) {
+	public static Matrix convolude(Matrix x) {
+		Matrix results = new Matrix(2, x.getRowDimension()+3);
+		
 		for (int t = 0; t < x.getRowDimension()+3; t++) {
 			Matrix xPart = null;
-			
+						
 			if (t >= x.getRowDimension()+1) {
 				xPart = new Matrix(new double[][] {
 						{x.get(t-3, 0),
@@ -69,8 +71,11 @@ public class Convolution {
 				}
 			}
 			
-			result.print(10, 10);
+			results.setMatrix(0, 1, t, t, result);
 		}
-		return null;
+		
+		results.print(10, 10);
+		
+		return results;
 	}
 }
