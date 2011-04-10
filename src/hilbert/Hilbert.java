@@ -203,18 +203,23 @@ public class Hilbert
 			for(int j=size-1;j>i;j--)
 			{
 				Matrix g=Matrix.identity(size, size);
-				double angle=Math.atan(r.get(j,i)/r.get(j-1,i));
-				angle=Math.toDegrees(angle);
-				g.set(j-1,j-1,Math.cos(angle));
-				g.set(j-1,j,Math.sin(angle));
-				g.set(j,j-1,-Math.sin(angle));
-				g.set(j, j,Math.cos(angle));
+				
+				double x = r.get(j - 1, i);
+				double y = r.get(j, i);
+				double cos = x / Math.sqrt(Math.pow(x,2) + Math.pow(y, 2));
+				double sin = -y / Math.sqrt(Math.pow(x,2) + Math.pow(y, 2));
+				
+				g.set(j - 1, j - 1, cos);
+				g.set(j - 1, j, -sin);
+				g.set(j, j - 1, sin);
+				g.set(j, j, cos);
+				
 				gs.add(g);
 				r=g.times(r);
 			}
 		}
 		q=new Matrix(gs.get(0).getArrayCopy());
-		for(int i=1;i<gs.size();i++)
+		for(int i = gs.size() - 1; i > 0; i--) //for(int i=1;i<gs.size();i++)
 			q=gs.get(i).times(q);
 		q.print(7,7);
 		r.print(7,7);
