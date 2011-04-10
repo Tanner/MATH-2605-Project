@@ -3,8 +3,13 @@ package convolution;
 import jama.Matrix;
 
 public class Convolution {
+	public static final int ITERATIONS = 200;
+	
 	public static void main(String[] args) {
-		convolude(new Matrix(new double[][]{{1,0,1,1,1,0,1,1,1,0,0,0,1,1,1,1,0,1,0,1,0}}).transpose()).print(4, 2);
+		Matrix y = convolude(new Matrix(new double[][]{{1,0,1,1,1,0,1,1,1,0,0,0,1,1,1,1,0,1,0,1,0}}).transpose());
+		y.print(4, 2);
+		
+		jacobiIteration(y).print(20, 5);
 	}
 	
 	public static Matrix convolude(Matrix x) {
@@ -75,5 +80,43 @@ public class Convolution {
 		}
 				
 		return results;
+	}
+	
+	public static Matrix jacobiIteration(Matrix b) {
+		//This is A.
+		Matrix y0 = new Matrix(new double[][]{{1.0, 1.0, 0.0, 1.0}});
+		Matrix y1 = new Matrix(new double[][]{{1.0, 0.0, 1.0, 1.0}});
+		Matrix a = new Matrix(y0.getColumnDimension(), y0.getColumnDimension());//4, y0.getColumnDimension());
+		a.setMatrix(0, 0, 0, y0.getColumnDimension() - 1, y0);
+		a.setMatrix(1, 1, 0, y1.getColumnDimension() - 1, y1);
+				
+		Matrix s = Matrix.identity(a.getRowDimension(), a.getColumnDimension());
+		s.setMatrix(0, 1, 0, y0.getColumnDimension()-1, a);
+		
+		s.print(10, 10);
+		
+		Matrix t = s.minus(a);
+		
+		Matrix x = new Matrix(a.getRowDimension(), 1, 0);
+		Matrix xPlus = (Matrix)x.clone();
+		
+		Matrix newB = new Matrix(b.getColumnDimension(), 1);
+		for (int i = 0; i < newB.getColumnDimension(); i++) {
+			newB.set(i, 0, b.get(i, 0) * 10 + b.get(i, 1));
+		}
+		b = newB;
+		
+		for (int i = 0; i < ITERATIONS; i++) {
+			
+			xPlus = t.times(x).plus(b);
+			
+			for (int j = 0; j < xPlus.getRowDimension(); j++) {
+				xPlus.set(j, 0, xPlus.get(j, 0) / s.get(j, j));
+			}
+			
+			x = (Matrix)xPlus.clone();
+		}
+		
+		return x;
 	}
 }
