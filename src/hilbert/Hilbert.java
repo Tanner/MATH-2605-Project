@@ -62,6 +62,22 @@ public class Hilbert
 		return max;
 	}
 	
+	public double error1QR2()
+	{
+		Matrix a=q.transpose().times(r).minus(matrix);
+		double max=0;
+		double temp=0;
+		for(int i=0;i<a.getRowDimension();i++)
+		{
+			temp=0;
+			for(int j=0;j<a.getColumnDimension();j++)
+				temp+=Math.abs(a.get(i,j));
+			if(temp>max)
+					max=temp;
+		}
+		return max;
+	}
+	
 	public double error2(Matrix x)
 	{
 		double max=0;
@@ -190,8 +206,6 @@ public class Hilbert
 				}
 		}
 		q= new Matrix(Q);
-		q.print(7,7);
-		r.print(7,7);
 	}
 	
 	public void givensQR()
@@ -219,10 +233,16 @@ public class Hilbert
 			}
 		}
 		q=new Matrix(gs.get(0).getArrayCopy());
-		for(int i = gs.size() - 1; i > 0; i--) //for(int i=1;i<gs.size();i++)
+		for(int i=1;i<gs.size();i++) //for(int i=1;i<gs.size();i++)
 			q=gs.get(i).times(q);
-		q.print(7,7);
-		r.print(7,7);
+		double[][] temp=r.getArray();
+		for(int i=0;i<temp.length-1;i++)
+			for(int j=0;j<temp[0].length;j++)
+				temp[i][j]=-temp[i][j];
+		temp=q.getArray();
+		for(int i=0;i<temp.length-1;i++)
+			for(int j=0;j<temp[0].length;j++)
+				temp[i][j]=-temp[i][j];
 	}
 	
 	public int getSize()
@@ -254,6 +274,20 @@ public class Hilbert
 	public Matrix solveQR()
 	{
 		Matrix y=q.transpose().times(b);
+		Matrix x=new Matrix(size,1,0);
+		for(int j=x.getRowDimension()-1;j>=0;j--)
+		{
+		    double t = 0.0;
+		    for(int k=j+1;k<y.getRowDimension();k++)
+		        t+=r.get(j, k)*x.get(k,0);
+		    x.set(j,0,(y.get(j,0)-t)/r.get(j,j));
+		}
+		return x;
+	}
+	
+	public Matrix solveQR2()
+	{
+		Matrix y=q.times(b);
 		Matrix x=new Matrix(size,1,0);
 		for(int j=x.getRowDimension()-1;j>=0;j--)
 		{
