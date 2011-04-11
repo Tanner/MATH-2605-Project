@@ -27,6 +27,11 @@ public class Convolution {
 		y1 = convolude(x, a1);
 		correctBitMatrix(jacobiIteration(a0, y0)).print(10, 2);
 		correctBitMatrix(jacobiIteration(a1, y1)).print(10, 2);
+		
+		jacobiIteration(new Matrix(new double[][]{{2, 1}, {5, 7}}), new Matrix(new double[][]{{11}, {13}})).print(10, 2);
+
+		gaussSeidelIteration(new Matrix(new double[][]{{2, 1}, {5, 7}}), new Matrix(new double[][]{{11}, {13}})).print(10, 2);
+
 	}
 	
 	public static Matrix correctBitMatrix(Matrix a) {
@@ -85,9 +90,36 @@ public class Convolution {
 	}
 	
 	public static Matrix jacobiIteration(Matrix a, Matrix b) {
-		Matrix s = Matrix.identity(a.getRowDimension(), a.getColumnDimension());
+		Matrix s = new Matrix(a.getRowDimension(), a.getColumnDimension());
 		for (int i = 0; i < a.getRowDimension(); i++) {
 			s.set(i, i, a.get(i, i));
+		}
+		
+		Matrix t = s.minus(a);
+		
+		Matrix x = new Matrix(a.getRowDimension(), 1, 0);
+		Matrix xPlus = (Matrix)x.clone();
+		
+		for (int i = 0; i < ITERATIONS; i++) {
+			xPlus = t.times(x).plus(b);
+			
+			for (int j = 0; j < xPlus.getRowDimension(); j++) {
+				xPlus.set(j, 0, xPlus.get(j, 0) / s.get(j, j));
+			}
+			
+			x = (Matrix)xPlus.clone();
+		}
+		
+		return x;
+	}
+	
+	// TODO
+	public static Matrix gaussSeidelIteration(Matrix a, Matrix b) {
+		Matrix s = new Matrix(a.getRowDimension(), a.getColumnDimension());
+		for (int r = 0; r < a.getRowDimension(); r++) {
+			for (int c = 0; c <= r; c++) {
+				s.set(r, c, a.get(r, c));
+			}
 		}
 		
 		Matrix t = s.minus(a);
