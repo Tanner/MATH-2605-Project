@@ -16,7 +16,8 @@ public class Convolution {
 		Matrix y0 = convolude(x, a0);
 		Matrix y1 = convolude(x, a1);
 		y0.print(10, 0);
-		y1.print(10, 0);
+		jacobiIteration(a0, y0).print(10, 2);
+		//y1.print(10, 0);
 		
 		//Part I
 		x = new Matrix(new double[][]{{1,0,1,1,1,0,1,1,1,0,0,0,1,1,1,1,0,1,0,1,0}});
@@ -24,8 +25,8 @@ public class Convolution {
 		a1 = createA(x, y1LinearCombo);
 		y0 = convolude(x, a0);
 		y1 = convolude(x, a1);
-		y0.print(10, 0);
-		y1.print(10, 0);
+		//y0.print(10, 0);
+		//y1.print(10, 0);
 	}
 	
 	public static Matrix convolude(Matrix x, Matrix a) {
@@ -72,32 +73,16 @@ public class Convolution {
 		return a;
 	}
 	
-	public static Matrix jacobiIteration(Matrix b) {
-		//This is A.
-		Matrix y0 = new Matrix(new double[][]{{1.0, 1.0, 0.0, 1.0}});
-		Matrix y1 = new Matrix(new double[][]{{1.0, 0.0, 1.0, 1.0}});
-		Matrix a = new Matrix(y0.getColumnDimension(), y0.getColumnDimension());//4, y0.getColumnDimension());
-		a.setMatrix(0, 0, 0, y0.getColumnDimension() - 1, y0);
-		a.setMatrix(1, 1, 0, y1.getColumnDimension() - 1, y1);
-				
+	public static Matrix jacobiIteration(Matrix a, Matrix b) {
 		Matrix s = Matrix.identity(a.getRowDimension(), a.getColumnDimension());
-		s.setMatrix(0, 1, 0, y0.getColumnDimension()-1, a);
-		
-		s.print(10, 10);
+		s.setMatrix(0, 1, 0, a.getColumnDimension() - 1, a);
 		
 		Matrix t = s.minus(a);
 		
 		Matrix x = new Matrix(a.getRowDimension(), 1, 0);
 		Matrix xPlus = (Matrix)x.clone();
 		
-		Matrix newB = new Matrix(b.getColumnDimension(), 1);
-		for (int i = 0; i < newB.getColumnDimension(); i++) {
-			newB.set(i, 0, b.get(i, 0) * 10 + b.get(i, 1));
-		}
-		b = newB;
-		
 		for (int i = 0; i < ITERATIONS; i++) {
-			
 			xPlus = t.times(x).plus(b);
 			
 			for (int j = 0; j < xPlus.getRowDimension(); j++) {
