@@ -122,21 +122,20 @@ public class Convolution {
 			}
 		}
 		
+		
 		Matrix t = s.minus(a);
 		
 		Matrix x = new Matrix(a.getRowDimension(), 1, 0);
 		Matrix xPlus = (Matrix)x.clone();
 		
 		for (int i = 0; i < ITERATIONS; i++) {
-			double temp = 0;
 			Matrix rightSide = t.times(x).plus(b);
-			for (int c = 0; c < s.getColumnDimension(); c++) {
-				temp = rightSide.get(c, 0);
-				for (int j = 0; j < c; j++) {
-					temp += s.get(c, j) * xPlus.get(j, 0);
-				}
-				temp /= s.get(c, c);
-				xPlus.set(c, 0, temp);
+			for(int j=0;j<t.getColumnDimension();j++)
+			{
+				double temp=0.0;
+				for(int k=0;k<j;k++)
+					temp+=s.get(j, k)*xPlus.get(k,0);
+				xPlus.set(j, 0, (rightSide.get(j,0)-temp)/s.get(j,j));
 			}
 			
 			x = (Matrix)xPlus.clone();
@@ -144,6 +143,7 @@ public class Convolution {
 //			System.out.println("Iteration #"+(i+2));
 //			x.print(10, 3);
 		}
+		
 		
 		return x;
 	}
