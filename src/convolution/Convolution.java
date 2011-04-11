@@ -15,8 +15,8 @@ public class Convolution {
 		Matrix a1 = createA(x, y1LinearCombo);
 		Matrix y0 = convolude(x, a0);
 		Matrix y1 = convolude(x, a1);
-		y0.print(10, 0);
-		jacobiIteration(a0, y0).print(10, 2);
+		correctBitMatrix(jacobiIteration(a0, y0)).print(10, 2);
+		correctBitMatrix(jacobiIteration(a1, y1)).print(10, 2);
 		//y1.print(10, 0);
 		
 		//Part I
@@ -27,6 +27,17 @@ public class Convolution {
 		y1 = convolude(x, a1);
 		//y0.print(10, 0);
 		//y1.print(10, 0);
+	}
+	
+	public static Matrix correctBitMatrix(Matrix a) {
+		Matrix cbm = new Matrix(a.getArrayCopy());
+		for (int r = 0; r < cbm.getRowDimension(); r++) {
+			for (int c = 0; c < cbm.getColumnDimension(); c++) {
+				cbm.set(r, c, Math.abs(a.get(r, c))%2);
+			}
+		}
+		
+		return cbm;
 	}
 	
 	public static Matrix convolude(Matrix x, Matrix a) {
@@ -75,7 +86,9 @@ public class Convolution {
 	
 	public static Matrix jacobiIteration(Matrix a, Matrix b) {
 		Matrix s = Matrix.identity(a.getRowDimension(), a.getColumnDimension());
-		s.setMatrix(0, 1, 0, a.getColumnDimension() - 1, a);
+		for (int i = 0; i < a.getRowDimension(); i++) {
+			s.set(i, i, a.get(i, i));
+		}
 		
 		Matrix t = s.minus(a);
 		
