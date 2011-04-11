@@ -6,80 +6,63 @@ public class Convolution {
 	public static final int ITERATIONS = 200;
 	
 	public static void main(String[] args) {
-		Matrix y = convolude(new Matrix(new double[][]{{1,0,1,1,1,0,1,1,1,0,0,0,1,1,1,1,0,1,0,1,0}}).transpose());
-		y.print(4, 2);
+		//Simple
+		Matrix x = new Matrix(new double[][]{{1, 0, 1, 1, 0}});
+		Matrix a = aZero(x);
+		Matrix y = convolude(x, a);
+		y.print(10, 0);
 		
-		jacobiIteration(y).print(20, 5);
+		//Part I
+		x = new Matrix(new double[][]{{1,0,1,1,1,0,1,1,1,0,0,0,1,1,1,1,0,1,0,1,0}});
+		a = aZero(x);
+		y = convolude(x, a);
+		y.print(10, 0);
 	}
 	
-	public static Matrix convolude(Matrix x) {
-		Matrix results = new Matrix(2, x.getRowDimension()+3);
-		
-		for (int t = 0; t < x.getRowDimension()+3; t++) {
-			Matrix xPart = null;
-						
-			if (t >= x.getRowDimension()+1) {
-				xPart = new Matrix(new double[][] {
-						{x.get(t-3, 0),
-							0.0,
-							0.0,
-							0.0}}).transpose();
-			} else if (t >= x.getRowDimension()) {
-				xPart = new Matrix(new double[][] {
-						{x.get(t-3, 0),
-							x.get(t-2, 0),
-							0.0,
-							0.0}}).transpose();
-			} else if (t >= x.getRowDimension()-1) {
-				xPart = new Matrix(new double[][] {
-						{x.get(t-3, 0),
-							x.get(t-2, 0),
-							x.get(t-1, 0),
-							0.0}}).transpose();
-			} else if (t-3 >= 0) {
-				xPart = new Matrix(new double[][] {
-						{x.get(t-3, 0),
-							x.get(t-2, 0),
-							x.get(t-1, 0),
-							x.get(t, 0)}}).transpose();
-			} else if (t-2 >= 0) {
-				xPart = new Matrix(new double[][] {
-						{0.0,
-							x.get(t-2, 0),
-							x.get(t-1, 0),
-							x.get(t, 0)}}).transpose();
-			} else if (t-1 >= 0) {
-				xPart = new Matrix(new double[][] {
-						{0.0,
-							0.0,
-							x.get(t-1, 0),
-							x.get(t, 0)}}).transpose();
-			} else if (t >= 0){
-				xPart = new Matrix(new double[][] {
-						{0.0,
-							0.0,
-							0.0,
-							x.get(t, 0)}}).transpose();
+	public static Matrix convolude(Matrix x, Matrix a) {
+		//Pad the X vector with zeros so it matches up with A
+		double[][] newXArray = new double[1][a.getColumnDimension()];
+		for (int i = 0; i < newXArray[0].length; i++) {
+			if (i < x.getColumnDimension()) {
+				newXArray[0][i] = x.get(0, i);
+			} else {
+				newXArray[0][i] = 0;
 			}
-			
-			Matrix y0 = new Matrix(new double[][]{{1.0, 1.0, 0.0, 1.0}});
-			Matrix y1 = new Matrix(new double[][]{{1.0, 0.0, 1.0, 1.0}});
-			Matrix a = new Matrix(2, y0.getColumnDimension());
-			a.setMatrix(0, 0, 0, a.getColumnDimension()-1, y0);
-			a.setMatrix(1, 1, 0, a.getColumnDimension()-1, y1);
-			
-			Matrix result = a.times(xPart);
-			
-			for (int r = 0; r < result.getRowDimension(); r++) {
-				for (int c = 0; c < result.getColumnDimension(); c++) {
-					result.set(r, c, result.get(r, c)%2);
+		}
+		Matrix newX = new Matrix(newXArray);
+		
+		//Multiply and perform binary addition
+		Matrix y = a.times(newX.transpose());
+		for (int i = 0; i < y.getRowDimension(); i++) {
+			int value = (int)y.get(i, 0);
+			if (value == 2) {
+				y.set(i, 0, 0);
+			} else if (value == 3) {
+				y.set(i, 0, 1);
+			}
+		}
+		
+		return y;
+	}
+	
+	public static Matrix aZero(Matrix x) {
+		Matrix y0 = new Matrix(new double[][]{{1.0, 1.0, 0.0, 1.0}});
+		
+		int sizeOfA = x.getColumnDimension() + y0.getColumnDimension() - 1;
+		
+		Matrix a = new Matrix(sizeOfA, sizeOfA, 0);
+		
+		int padding = 1 - y0.getColumnDimension();
+		for (int r = 0; r < a.getRowDimension(); r++) {
+			for (int i = 0; i < y0.getColumnDimension(); i++) {
+				if (i + padding >= 0) {
+					a.set(r, i + padding, y0.get(0, i));
 				}
 			}
-			
-			results.setMatrix(0, 1, t, t, result);
+			padding++;
 		}
-				
-		return results;
+		
+		return a;
 	}
 	
 	public static Matrix jacobiIteration(Matrix b) {
