@@ -6,17 +6,26 @@ public class Convolution {
 	public static final int ITERATIONS = 200;
 	
 	public static void main(String[] args) {
+		Matrix y0LinearCombo = new Matrix(new double[][]{{1.0, 1.0, 0.0, 1.0}});
+		Matrix y1LinearCombo = new Matrix(new double[][]{{1.0, 0.0, 1.0, 1.0}});
+		
 		//Simple
 		Matrix x = new Matrix(new double[][]{{1, 0, 1, 1, 0}});
-		Matrix a = aZero(x);
-		Matrix y = convolude(x, a);
-		y.print(10, 0);
+		Matrix a0 = createA(x, y0LinearCombo);
+		Matrix a1 = createA(x, y1LinearCombo);
+		Matrix y0 = convolude(x, a0);
+		Matrix y1 = convolude(x, a1);
+		y0.print(10, 0);
+		y1.print(10, 0);
 		
 		//Part I
 		x = new Matrix(new double[][]{{1,0,1,1,1,0,1,1,1,0,0,0,1,1,1,1,0,1,0,1,0}});
-		a = aZero(x);
-		y = convolude(x, a);
-		y.print(10, 0);
+		a0 = createA(x, y0LinearCombo);
+		a1 = createA(x, y1LinearCombo);
+		y0 = convolude(x, a0);
+		y1 = convolude(x, a1);
+		y0.print(10, 0);
+		y1.print(10, 0);
 	}
 	
 	public static Matrix convolude(Matrix x, Matrix a) {
@@ -45,18 +54,16 @@ public class Convolution {
 		return y;
 	}
 	
-	public static Matrix aZero(Matrix x) {
-		Matrix y0 = new Matrix(new double[][]{{1.0, 1.0, 0.0, 1.0}});
-		
-		int sizeOfA = x.getColumnDimension() + y0.getColumnDimension() - 1;
+	public static Matrix createA(Matrix x, Matrix linearCombo) {
+		int sizeOfA = x.getColumnDimension() + linearCombo.getColumnDimension() - 1;
 		
 		Matrix a = new Matrix(sizeOfA, sizeOfA, 0);
 		
-		int padding = 1 - y0.getColumnDimension();
+		int padding = 1 - linearCombo.getColumnDimension();
 		for (int r = 0; r < a.getRowDimension(); r++) {
-			for (int i = 0; i < y0.getColumnDimension(); i++) {
+			for (int i = 0; i < linearCombo.getColumnDimension(); i++) {
 				if (i + padding >= 0) {
-					a.set(r, i + padding, y0.get(0, i));
+					a.set(r, i + padding, linearCombo.get(0, i));
 				}
 			}
 			padding++;
