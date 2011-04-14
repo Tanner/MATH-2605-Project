@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 
 import de.erichseifert.gral.data.DataTable;
 import de.erichseifert.gral.plots.XYPlot;
+import de.erichseifert.gral.plots.axes.AxisRenderer;
 import de.erichseifert.gral.plots.points.PointRenderer;
 import de.erichseifert.gral.ui.InteractivePanel;
 
@@ -136,6 +137,9 @@ public class PowerMethodMain {
 
 		plot.getPointRenderer(data).setSetting(IterationsPointRenderer.VALUE_MIN, (double)minIterations);
 		plot.getPointRenderer(data).setSetting(IterationsPointRenderer.VALUE_MAX, (double)maxIterations);
+		
+		plot.getAxisRenderer(XYPlot.AXIS_X).setSetting(AxisRenderer.LABEL, "Determinant");
+		plot.getAxisRenderer(XYPlot.AXIS_Y).setSetting(AxisRenderer.LABEL, "Trace");
 		
 		return plot;
 	}
