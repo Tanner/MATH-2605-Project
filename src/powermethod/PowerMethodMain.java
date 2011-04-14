@@ -3,21 +3,28 @@ package powermethod;
 import jama.Matrix;
 
 import java.awt.Color;
-import java.awt.Dimension;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
-import javax.swing.JFrame;
-
 import de.erichseifert.gral.data.DataTable;
+import de.erichseifert.gral.io.plots.DrawableWriter;
+import de.erichseifert.gral.io.plots.DrawableWriterFactory;
 import de.erichseifert.gral.plots.XYPlot;
 import de.erichseifert.gral.plots.axes.AxisRenderer;
 import de.erichseifert.gral.plots.points.PointRenderer;
-import de.erichseifert.gral.ui.InteractivePanel;
 
 public class PowerMethodMain {
 	public static final int POWER_METHOD_MAX_ITERATIONS = 1000;
 	public static final int ACCURACY = 5;
+	
+	private static final int IMAGE_HEIGHT = 800;
+	private static final int IMAGE_WIDTH = 600;
+	
+	private static final String INVERSE_POWER_METHOD_FILE = "inversePowerMethod.png";
+	private static final String POWER_METHOD_FILE = "powerMethod.png";
 	
 	public static void main(String[] args) {
 		ArrayList<MatrixGroup> matrices = new ArrayList<MatrixGroup>();
@@ -38,7 +45,7 @@ public class PowerMethodMain {
 		}
 		
 		paintPowerMethodPlot(matrices);
-		//paintInversePowerMethodPlot(matrices);
+		paintInversePowerMethodPlot(matrices);
 	}
 	
 	/**
@@ -71,13 +78,14 @@ public class PowerMethodMain {
 		}
 		
 		XYPlot plot = createPlot(data, minIterations, maxIterations);
+		savePlot(plot, POWER_METHOD_FILE);
 		
-		JFrame frame = new JFrame();
+		/*JFrame frame = new JFrame();
 		frame.getContentPane().add(new InteractivePanel(plot));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setPreferredSize(new Dimension(800, 600));
 		frame.pack();
-		frame.setVisible(true);
+		frame.setVisible(true);*/
 	}
 	
 	/**
@@ -110,13 +118,14 @@ public class PowerMethodMain {
 		}
 		
 		XYPlot plot = createPlot(data, minIterations, maxIterations);
+		savePlot(plot, INVERSE_POWER_METHOD_FILE);
 		
-		JFrame frame = new JFrame();
+		/*JFrame frame = new JFrame();
 		frame.getContentPane().add(new InteractivePanel(plot));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setPreferredSize(new Dimension(800, 600));
 		frame.pack();
-		frame.setVisible(true);
+		frame.setVisible(true);*/
 	}
 	
 	/**
@@ -142,6 +151,27 @@ public class PowerMethodMain {
 		plot.getAxisRenderer(XYPlot.AXIS_Y).setSetting(AxisRenderer.LABEL, "Trace");
 		
 		return plot;
+	}
+	
+	/**
+	 * Saves the given graph to the given file name.
+	 * 
+	 * @param plot Graph to save
+	 * @param fileName Filename to save to
+	 */
+	public static void savePlot(XYPlot plot, String fileName) {
+		plot.setBounds(0, 0, IMAGE_HEIGHT, IMAGE_WIDTH);
+		
+		DrawableWriter writer = DrawableWriterFactory.getInstance().get("image/png");
+		try {
+			writer.write(plot, new FileOutputStream(fileName), IMAGE_HEIGHT, IMAGE_WIDTH);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
