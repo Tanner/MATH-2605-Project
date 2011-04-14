@@ -90,7 +90,7 @@ public class MatrixGroup {
 	 * 
 	 * @return The inversePowerMethodIterations
 	 */
-	public double getInversePowerMethodIterations() {
+	public int getInversePowerMethodIterations() {
 		return inversePowerMethodIterations;
 	}
 

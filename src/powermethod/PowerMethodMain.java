@@ -37,6 +37,7 @@ public class PowerMethodMain {
 		}
 		
 		paintPowerMethodPlot(matrices);
+		//paintInversePowerMethodPlot(matrices);
 	}
 	
 	/**
@@ -68,6 +69,64 @@ public class PowerMethodMain {
 			data.add(determinant, trace, group.getPowerMethodIterations());
 		}
 		
+		XYPlot plot = createPlot(data, minIterations, maxIterations);
+		
+		JFrame frame = new JFrame();
+		frame.getContentPane().add(new InteractivePanel(plot));
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setPreferredSize(new Dimension(800, 600));
+		frame.pack();
+		frame.setVisible(true);
+	}
+	
+	/**
+	 * Plots a XY plot of all the MatrixGroup objects with the X-Axis being the matrix's determinant
+	 * and the Y-Axis being the matrix's trace. The color of the points corresponds to the number of
+	 * iterations for the inverse power method.
+	 * 
+	 * Sources: http://trac.erichseifert.de/gral/
+	 * 
+	 * @param matrices ArrayList of MatrixGroup's to plot
+	 */
+	private static void paintInversePowerMethodPlot(ArrayList<MatrixGroup> matrices) {
+		DataTable data = new DataTable(Double.class, Double.class, Integer.class);
+		
+		int minIterations = Integer.MAX_VALUE;
+		int maxIterations = Integer.MIN_VALUE;
+		for (MatrixGroup group : matrices) {
+			int iterations = group.getInversePowerMethodIterations();
+			if (iterations < minIterations) {
+				minIterations = iterations;
+			}
+			if (iterations > maxIterations) {
+				maxIterations = iterations;
+			}
+			
+			double determinant = group.getMatrix().det();
+			double trace = group.getMatrix().trace();
+			
+			data.add(determinant, trace, group.getPowerMethodIterations());
+		}
+		
+		XYPlot plot = createPlot(data, minIterations, maxIterations);
+		
+		JFrame frame = new JFrame();
+		frame.getContentPane().add(new InteractivePanel(plot));
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setPreferredSize(new Dimension(800, 600));
+		frame.pack();
+		frame.setVisible(true);
+	}
+	
+	/**
+	 * Creates an XY plot using the given data and min/max iterations.
+	 * 
+	 * @param data Data for the matrices
+	 * @param minIterations Lowest number of iterations
+	 * @param maxIterations Greatest number of iterations
+	 * @return Created XYPlot
+	 */
+	public static XYPlot createPlot(DataTable data, int minIterations, int maxIterations) {
 		XYPlot plot = new XYPlot(data);
 		
 		plot.setPointRenderer(data, new IterationsPointRenderer());
@@ -78,12 +137,7 @@ public class PowerMethodMain {
 		plot.getPointRenderer(data).setSetting(IterationsPointRenderer.VALUE_MIN, (double)minIterations);
 		plot.getPointRenderer(data).setSetting(IterationsPointRenderer.VALUE_MAX, (double)maxIterations);
 		
-		JFrame frame = new JFrame();
-		frame.getContentPane().add(new InteractivePanel(plot));
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setPreferredSize(new Dimension(800, 600));
-		frame.pack();
-		frame.setVisible(true);
+		return plot;
 	}
 
 	/**
