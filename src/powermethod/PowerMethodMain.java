@@ -12,6 +12,7 @@ import java.util.Random;
 import de.erichseifert.gral.data.DataTable;
 import de.erichseifert.gral.io.plots.DrawableWriter;
 import de.erichseifert.gral.io.plots.DrawableWriterFactory;
+import de.erichseifert.gral.plots.Plot;
 import de.erichseifert.gral.plots.XYPlot;
 import de.erichseifert.gral.plots.axes.AxisRenderer;
 import de.erichseifert.gral.plots.points.PointRenderer;
@@ -77,7 +78,7 @@ public class PowerMethodMain {
 			data.add(determinant, trace, group.getPowerMethodIterations());
 		}
 		
-		XYPlot plot = createPlot(data, minIterations, maxIterations);
+		XYPlot plot = createPlot(data, minIterations, maxIterations, "Power Method");
 		savePlot(plot, POWER_METHOD_FILE);
 		
 		/*JFrame frame = new JFrame();
@@ -117,7 +118,7 @@ public class PowerMethodMain {
 			data.add(determinant, trace, group.getPowerMethodIterations());
 		}
 		
-		XYPlot plot = createPlot(data, minIterations, maxIterations);
+		XYPlot plot = createPlot(data, minIterations, maxIterations, "Inverse Power Method");
 		savePlot(plot, INVERSE_POWER_METHOD_FILE);
 		
 		/*JFrame frame = new JFrame();
@@ -134,9 +135,10 @@ public class PowerMethodMain {
 	 * @param data Data for the matrices
 	 * @param minIterations Lowest number of iterations
 	 * @param maxIterations Greatest number of iterations
+	 * @param title Title for the plot
 	 * @return Created XYPlot
 	 */
-	public static XYPlot createPlot(DataTable data, int minIterations, int maxIterations) {
+	public static XYPlot createPlot(DataTable data, int minIterations, int maxIterations, String title) {
 		XYPlot plot = new XYPlot(data);
 		
 		plot.setPointRenderer(data, new IterationsPointRenderer());
@@ -149,6 +151,8 @@ public class PowerMethodMain {
 		
 		plot.getAxisRenderer(XYPlot.AXIS_X).setSetting(AxisRenderer.LABEL, "Determinant");
 		plot.getAxisRenderer(XYPlot.AXIS_Y).setSetting(AxisRenderer.LABEL, "Trace");
+		
+		plot.setSetting(XYPlot.TITLE, title);
 		
 		return plot;
 	}
