@@ -18,7 +18,7 @@ import de.erichseifert.gral.plots.axes.AxisRenderer;
 import de.erichseifert.gral.plots.points.PointRenderer;
 
 public class PowerMethodMain {
-	public static final int POWER_METHOD_MAX_ITERATIONS = 1000;
+	public static final int POWER_METHOD_MAX_ITERATIONS = 2000;
 	public static final int ACCURACY = 5;
 	
 	private static final int IMAGE_HEIGHT = 800;
@@ -75,7 +75,7 @@ public class PowerMethodMain {
 			double determinant = group.getMatrix().det();
 			double trace = group.getMatrix().trace();
 			
-			data.add(determinant, trace, group.getPowerMethodIterations());
+			data.add(determinant, trace, iterations);
 		}
 		
 		XYPlot plot = createPlot(data, minIterations, maxIterations, "Power Method");
@@ -115,7 +115,7 @@ public class PowerMethodMain {
 			double determinant = group.getMatrix().det();
 			double trace = group.getMatrix().trace();
 			
-			data.add(determinant, trace, group.getPowerMethodIterations());
+			data.add(determinant, trace, iterations);
 		}
 		
 		XYPlot plot = createPlot(data, minIterations, maxIterations, "Inverse Power Method");
